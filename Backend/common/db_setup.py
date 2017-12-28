@@ -3,28 +3,22 @@ import sqlite3
 class AirlineDatabase:
 
     #def create_table(conn, c):
-    #    c.execute('CREATE TABLE IF NOT EXISTS milesForStores(storename TEXT PRIMARY KEY, domain TEXT)')
+        #c.execute('CREATE TABLE IF NOT EXISTS storeNames(store_id INTEGER PRIMARY KEY AUTOINCREMENT, store_name TEXT NOT NULL, domain TEXT NOT NULL)')
+        #c.execute('CREATE TABLE IF NOT EXISTS pointsData(points_id INTEGER PRIMARY KEY, store_id INTEGER, airline_id INTEGER, afilliate_link TEXT, points INTEGER, FOREIGN KEY (store_id) REFERENCES storeNames(store_id))')
 
-    def test_data_entry(conn, c):
-        c.execute("INSERT INTO milesForStores VALUES('Staples', 'www.staple.com')")
-        conn.commit()
-
-    def check_data(conn, c, storename):
+    def check_domain(conn, c, storename):
         try:
-            sql = 'SELECT domain FROM milesForStores WHERE storename="%s"' % (storename)
+            sql = 'SELECT domain FROM storeNames WHERE store_name="%s"' % (storename)
             c.execute(sql)
             store = c.fetchall()
             return store[0][0]
         except:
             return ""
 
-    def insert_data(conn, c, storename, url):
-        c.execute("INSERT INTO milesForStores (storename, domain) VALUES (?, ?)", (storename, url))
+    def insert_domain(conn, c, store_name, domain):
+        c.execute("INSERT INTO storeNames (store_name, domain) VALUES (?, ?)", (store_name, domain))
         conn.commit()
 
     def close_table(conn, c):
         c.close()
         conn.close()
-
-#c.execute('CREATE TABLE IF NOT EXISTS storeNames(store_id INTEGER PRIMARY KEY AUTOINCREMENT, store_name TEXT NOT NULL, domain TEXT NOT NULL)')
-#c.execute('CREATE TABLE IF NOT EXISTS pointsData(points_id INTEGER PRIMARY KEY, store_id INTEGER, airline_id INTEGER, afilliate_link TEXT, points INTEGER, FOREIGN KEY (store_id) REFERENCES storeNames(store_id))')

@@ -31,9 +31,9 @@ class UnitedAirlines:
     def domain_finder(storename):
         conn = sqlite3.connect('airlineusa.db')
         c = conn.cursor()
-        data_check = AirlineDatabase.check_data(conn, c, storename)
+        data_check = AirlineDatabase.check_domain(conn, c, storename)
         if data_check == '':
-            AirlineDatabase.insert_data(conn, c, storename, 'www.testurl.com')
+            AirlineDatabase.insert_domain(conn, c, storename, 'www.testurl.com')
             AirlineDatabase.close_table(conn, c)
         else:
             AirlineDatabase.close_table(conn, c)
