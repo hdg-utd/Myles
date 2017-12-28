@@ -2,8 +2,8 @@ import sqlite3
 
 class AirlineDatabase:
 
-    def create_table(conn, c):
-        c.execute('CREATE TABLE IF NOT EXISTS milesForStores(storename TEXT PRIMARY KEY, domain TEXT)')
+    #def create_table(conn, c):
+    #    c.execute('CREATE TABLE IF NOT EXISTS milesForStores(storename TEXT PRIMARY KEY, domain TEXT)')
 
     def test_data_entry(conn, c):
         c.execute("INSERT INTO milesForStores VALUES('Staples', 'www.staple.com')")
@@ -25,3 +25,6 @@ class AirlineDatabase:
     def close_table(conn, c):
         c.close()
         conn.close()
+
+#c.execute('CREATE TABLE IF NOT EXISTS storeNames(store_id INTEGER PRIMARY KEY AUTOINCREMENT, store_name TEXT NOT NULL, domain TEXT NOT NULL)')
+#c.execute('CREATE TABLE IF NOT EXISTS pointsData(points_id INTEGER PRIMARY KEY, store_id INTEGER, airline_id INTEGER, afilliate_link TEXT, points INTEGER, FOREIGN KEY (store_id) REFERENCES storeNames(store_id))')
