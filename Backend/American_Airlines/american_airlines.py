@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
-
+from common.domain_name import DomainFinder
+print(DomainFinder.get_domain_name("Testereed"))
 class AmericanAirlines:
 
     @staticmethod
     def get_aa_raw():
-        aa = open('./american_airlines.html', 'r')
+        aa = open('./American_Airlines/american_airlines.html', 'r')
         return AmericanAirlines.aa_html_to_json(aa)
 
     def aa_html_to_json(html):
@@ -18,5 +19,3 @@ class AmericanAirlines:
             return raw.find('span', class_='mn_elevationNewValue').get_text().strip().split(' ')[0]
         except:
             return raw.get_text().strip().split(' ')[0]
-
-print(AmericanAirlines.get_aa_raw())
