@@ -12,14 +12,14 @@ class DeltaAirlines:
     def delta_html_to_json(html):
         soup = BeautifulSoup(html, 'html.parser')
         merchant_groups = soup.find_all('a', attrs={'data-default-tab': 'merchant'})
-        merchants = map(lambda x: {x.find('span', class_='mn_merchName').get_text(): [x["href"], DeltaAirlines.points_extractor(x.find('span', class_='mn_rebateValueWithCurrency')), DeltaAirlines.domain_finder(x.find('span', class_='mn_merchName').get_text())]}, merchant_groups)
+        merchants = map(lambda x: {x.find('span', class_='mn_merchName').find(text=True, recursive=False): [x["href"], DeltaAirlines.points_extractor(x.find('span', class_='mn_rebateValueWithCurrency')), DeltaAirlines.domain_finder(x.find('span', class_='mn_merchName').find(text=True, recursive=False))]}, merchant_groups)
         return list(merchants)
 
     def points_extractor(raw):
         try:
-            return raw.find('span', class_='mn_elevationNewValue').get_text().strip().split(' ')[0]
+            return raw.find('span', class_='mn_elevationNewValue').find(text=True, recursive=False).strip().split(' ')[0]
         except:
-            return raw.get_text().strip().split(' ')[0]
+            return raw.find(text=True, recursive=False).strip().split(' ')[0]
 
     def domain_finder(storename):
         conn = sqlite3.connect('airlineusa.db')
