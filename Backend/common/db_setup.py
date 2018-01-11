@@ -4,7 +4,7 @@ class AirlineDatabase:
 
     #def create_table(conn, c):
         #c.execute('CREATE TABLE IF NOT EXISTS storeNames(store_id INTEGER PRIMARY KEY AUTOINCREMENT, store_name TEXT NOT NULL, domain TEXT NOT NULL)')
-        #c.execute('CREATE TABLE IF NOT EXISTS pointsData(points_id INTEGER PRIMARY KEY, store_id INTEGER, airline_id INTEGER, afilliate_link TEXT, points INTEGER, FOREIGN KEY (store_id) REFERENCES storeNames(store_id))')
+        #c.execute('CREATE TABLE IF NOT EXISTS pointsData(points_id INTEGER PRIMARY KEY AUTOINCREMENT, store_id INTEGER, airline_id INTEGER, afilliate_link TEXT, points INTEGER, FOREIGN KEY (store_id) REFERENCES storeNames(store_id))')
 
     def check_domain(conn, c, storename):
         try:

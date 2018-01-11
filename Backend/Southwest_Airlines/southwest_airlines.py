@@ -28,6 +28,7 @@ class SouthwestAirlines:
         if data_check == '':
             AirlineDatabase.insert_domain(conn, c, storename, 'www.testurl.com')
             AirlineDatabase.close_table(conn, c)
+            return 'www.testurl.com'
         else:
             AirlineDatabase.close_table(conn, c)
             return data_check
