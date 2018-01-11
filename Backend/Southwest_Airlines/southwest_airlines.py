@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from common.db_setup import AirlineDatabase
 import sqlite3
+from common.google import GoogleSearch
 
 class SouthwestAirlines:
 
@@ -26,9 +27,10 @@ class SouthwestAirlines:
         c = conn.cursor()
         data_check = AirlineDatabase.check_domain(conn, c, storename)
         if data_check == '':
-            AirlineDatabase.insert_domain(conn, c, storename, 'www.testurl.com')
+            domain = GoogleSearch(storename)
+            AirlineDatabase.insert_domain(conn, c, storename, domain)
             AirlineDatabase.close_table(conn, c)
-            return 'www.testurl.com'
+            return domain
         else:
             AirlineDatabase.close_table(conn, c)
             return data_check
