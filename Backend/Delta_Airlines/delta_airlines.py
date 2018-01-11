@@ -26,7 +26,7 @@ class DeltaAirlines:
         conn = sqlite3.connect('airlineusa.db')
         c = conn.cursor()
         data_check = AirlineDatabase.check_domain(conn, c, storename)
-        if data_check == '':
+        if data_check == '' or data_check == 'none':
             domain = GoogleSearch(storename)
             AirlineDatabase.insert_domain(conn, c, storename, domain)
             AirlineDatabase.close_table(conn, c)
