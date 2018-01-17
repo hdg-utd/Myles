@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import sqlite3
 from common.db_setup import EbatesDatabase
-from common.google import GoogleSearch
+#from common.google import GoogleSearch
 import json
 
 class Ebates:
@@ -14,7 +14,7 @@ class Ebates:
     def ebates_html_to_json(html):
         soup = BeautifulSoup(html, 'html.parser')
         stores = soup.find_all('li', attrs={'class': 'store'})
-        merchants = map(lambda x: {Ebates.name_extractor(x): [Ebates.url_extractor(x), Ebates.points_extractor(x), Ebates.domain_finder(Ebates.name_extractor(x))]}, stores)
+        merchants = map(lambda x: {Ebates.name_extractor(x): [Ebates.url_extractor(x), Ebates.points_extractor(x), Ebates.domain_finder(x)]}, stores)
         return list(merchants)
 
     def name_extractor(raw):
@@ -32,18 +32,21 @@ class Ebates:
                 return item.split('%')[0]
         return ''
 
-    def domain_finder(storename):
-        conn = sqlite3.connect('ebates.db')
-        c = conn.cursor()
-        data_check = EbatesDatabase.check_domain(conn, c, storename)
-        if data_check == '' or data_check == 'none':
-            domain = GoogleSearch(storename)
-            EbatesDatabase.insert_domain(conn, c, storename, domain)
-            EbatesDatabase.close_table(conn, c)
-            return domain
-        else:
-            EbatesDatabase.close_table(conn, c)
-            return data_check
+    #def domain_finder(storename):
+    #    conn = sqlite3.connect('ebates.db')
+    #    c = conn.cursor()
+    #    data_check = EbatesDatabase.check_domain(conn, c, storename)
+    #    if data_check == '' or data_check == 'none':
+    #        domain = GoogleSearch(storename)
+    #        EbatesDatabase.insert_domain(conn, c, storename, domain)
+    #        EbatesDatabase.close_table(conn, c)
+    #        return domain
+    #    else:
+    #        EbatesDatabase.close_table(conn, c)
+    #        return data_check
+
+    def domain_finder(raw):
+        return 'www.' + raw.find('span', attrs={'class': 'store-name'}).find('a')['href'].split('/')[1]
 
     def list_cleaner(raw):
         result = {}
