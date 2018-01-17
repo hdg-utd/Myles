@@ -2,13 +2,14 @@ from bs4 import BeautifulSoup
 import sqlite3
 from common.db_setup import EbatesDatabase
 from common.google import GoogleSearch
+import json
 
 class Ebates:
 
     @staticmethod
     def get_ebates_raw():
         ebates = open('./ebates.html', 'r')
-        return Ebates.ebates_html_to_json(ebates)
+        return Ebates.list_cleaner(Ebates.ebates_html_to_json(ebates))
 
     def ebates_html_to_json(html):
         soup = BeautifulSoup(html, 'html.parser')
@@ -36,8 +37,7 @@ class Ebates:
         c = conn.cursor()
         data_check = EbatesDatabase.check_domain(conn, c, storename)
         if data_check == '' or data_check == 'none':
-            #domain = GoogleSearch(storename)
-            domain = 'testurl.com'
+            domain = GoogleSearch(storename)
             EbatesDatabase.insert_domain(conn, c, storename, domain)
             EbatesDatabase.close_table(conn, c)
             return domain
@@ -45,4 +45,18 @@ class Ebates:
             EbatesDatabase.close_table(conn, c)
             return data_check
 
-print(Ebates.get_ebates_raw())
+    def list_cleaner(raw):
+        result = {}
+        for item in raw:
+            print()
+            if item[list(item.keys())[0]][1] == '':
+                continue
+            else:
+                result[list(item.keys())[0]] = item[list(item.keys())[0]]
+        return result
+
+ebates = {}
+ebates["ebates"] = Ebates.get_ebates_raw()
+
+with open('./ebates.json', 'w') as fp:
+    json.dump(ebates, fp)
