@@ -51,7 +51,6 @@ class Ebates:
     def list_cleaner(raw):
         result = {}
         for item in raw:
-            print()
             if item[list(item.keys())[0]][1] == '':
                 continue
             else:
